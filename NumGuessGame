@@ -40,7 +40,7 @@ class guessgame{
 		ch=ch1!=0;
 	}
 }}
-public class p11 {
+public class num {
     public static void main(String[] args) {
         guessgame obj = new guessgame();
         obj.guess();
