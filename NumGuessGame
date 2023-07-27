@@ -1,5 +1,4 @@
 import java.util.*;
-
 class guessgame {
 	private int atamp = 10;
 	private int num1, num2, remark = 0;
@@ -34,7 +33,7 @@ class guessgame {
 			int ch1 = sc.nextInt();
 			ch = ch1 != 0;
 		}
-	}
+}
 }
 
 public class num {
