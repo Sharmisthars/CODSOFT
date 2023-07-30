@@ -2,25 +2,19 @@ import java.io.*;
 import java.util.*;
 
 public class WordCounter {
-
     // Common words to ignore in the word count
     private static final Set<String> commonWords = new HashSet<>(Arrays.asList(
-            "the", "and", "in", "of", "to", "a", "for", "on", "with", "is", "it", "as"
-    // Add more common words as needed
-    ));
-
+            "the", "and", "in", "of", "to", "a", "for", "on", "with", "is", "it", "as" )); // Add more common words as needed
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Enter text or provide a file path to count words: ");
         String input = scanner.nextLine().trim();
-
         String text;
         if (isFilePath(input)) {
             text = readTextFromFile(input);
         } else {
             text = input;
         }
-
         if (text.isEmpty()) {
             System.out.println("No text found.");
         }
