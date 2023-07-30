@@ -36,7 +36,7 @@ class guessgame {
 }
 }
 
-public class num {
+public class numbergame {
 	public static void main(String[] args) {
 		guessgame obj = new guessgame();
 		obj.guess();
