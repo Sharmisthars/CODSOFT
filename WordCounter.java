@@ -12,7 +12,8 @@ public class WordCounter {
         String text;
         if (isFilePath(input)) {
             text = readTextFromFile(input);
-        } else {
+        } else 
+        {
             text = input;
         }
         if (text.isEmpty()) {
