@@ -1,59 +1,84 @@
-import java.io.*;
 import java.util.*;
-
+import java.io.*;
 public class WordCounter {
-    // Common words to ignore in the word count
-    private static final Set<String> commonWords = new HashSet<>(Arrays.asList(
-            "the", "and", "in", "of", "to", "a", "for", "on", "with", "is", "it", "as" )); // Add more common words as needed
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter text or provide a file path to count words: ");
+        String text = getInputText(scanner);
+        if (text != null && !text.isEmpty()) {
+            String[] words = splitTextIntoWords(text);
+            if (words != null) {
+                int totalWords = countWords(words);
+                System.out.println("Total number of words: " + totalWords);
+                Map<String, Integer> wordFrequency = getWordFrequency(words);
+                System.out.println("Number of unique words: " + wordFrequency.size());
+                displayWordFrequency(wordFrequency);
+            }
+        }
+    }
+    private static String getInputText(Scanner scanner) {
+        System.out.println("Enter text or provide the path of a file:");
         String input = scanner.nextLine().trim();
-        String text;
-        if (isFilePath(input)) {
-            text = readTextFromFile(input);
-        } else 
-        {
-            text = input;
+        if (input.isEmpty()) {
+            System.out.println("Invalid input. Text or file path cannot be empty.");
+            return null;
         }
-        if (text.isEmpty()) {
-            System.out.println("No text found.");
+        try {
+            if (new File(input).isFile()) {
+                return readFileContent(input);
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
         }
-        scanner.close();
-        String[] words = text.split("\\s+|(?=\\p{Punct})|(?<=\\p{Punct})"); // Split by space or punctuation
-        int wordCount = 0;
-        Map<String, Integer> wordFrequency = new HashMap<>();
+        return input;
+    }
 
+    private static String readFileContent(String filePath) throws IOException {
+        StringBuilder content = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+        }
+        return content.toString();
+    }
+
+    private static String[] splitTextIntoWords(String text) {
+        // Use regex to split words by spaces and punctuation marks
+        // [\\p{Punct}\\s] matches any punctuation or whitespace character
+        return text.split("[\\p{Punct}\\s]+");
+    }
+
+    private static int countWords(String[] words) {
+        return words.length;
+    }
+
+    private static Map<String, Integer> getWordFrequency(String[] words) {
+        Map<String, Integer> wordFrequency = new HashMap<>();
+        Set<String> commonWords = getCommonWords();
         for (String word : words) {
-            if (!word.isEmpty() && !commonWords.contains(word.toLowerCase())) {
-                wordCount++;
+            word = word.toLowerCase(); // Convert to lowercase for case-insensitive counting
+            if (!commonWords.contains(word)) {
                 wordFrequency.put(word, wordFrequency.getOrDefault(word, 0) + 1);
             }
         }
+        return wordFrequency;
+    }
 
-        System.out.println("Total word count: " + wordCount);
-        System.out.println("Number of unique words: " + wordFrequency.size());
+    private static Set<String> getCommonWords() {
+        // Add common words to this set to ignore them in word counting
+        Set<String> commonWords = new HashSet<>();
+        commonWords.add("the");
+        commonWords.add("and");
+        commonWords.add("is");
+        // Add more common words as needed
+        return commonWords;
+    }
+    private static void displayWordFrequency(Map<String, Integer> wordFrequency) {
         System.out.println("Word frequency:");
-
         for (Map.Entry<String, Integer> entry : wordFrequency.entrySet()) {
             System.out.println(entry.getKey() + ": " + entry.getValue());
         }
     }
-
-    private static boolean isFilePath(String input) {
-        return new File(input).exists();
-    }
-
-    private static String readTextFromFile(String filePath) {
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                sb.append(line).append("\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return sb.toString();
-    }
 }
+
