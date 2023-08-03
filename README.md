@@ -9,6 +9,9 @@ This respiratory is created to do the projects which will be done for CodSoft .
     5. Limit the number of attempts the user has to guess the number.
     6. Add the option for multiple rounds, allowing the user to play again.
     7. Display the user's score, which can be based on the number of attempts taken or rounds won.
+ 
+ 
+ 
  Task 2 : Word Counter
    Features & description of this game :
      1. Prompt the user to enter a text or provide a file to count the words.
